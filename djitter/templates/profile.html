@@ -28,6 +28,36 @@
     <!-- Sidebar -->
     <div class="col-3">
         <h3>Add djeet</h3>
+
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="/{{ request.user.username }}/" method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field }}
+                </div>
+            {% endfor %}
+
+            <input type="hidden" value="{{ request.path }}" name="redirect">
+            <input type="submit" value="Post djeet" class="btn btn-primary">
+
+        </form>
+
     </div>
 </div>
 
