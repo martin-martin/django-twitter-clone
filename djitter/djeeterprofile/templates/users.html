@@ -1,0 +1,16 @@
+{% extends "templates/base.html" %}
+
+{% block main %}
+
+    <div>
+        <h1>{{ title }}</h1>
+        <ul>
+            {% for djeeter in djeeterprofiles  %}
+                <li><a href="/{{ djeeter.user.username }}/">
+                    @{{ djeeter.user.username }}
+                </a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock main %}
