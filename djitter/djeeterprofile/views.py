@@ -39,11 +39,13 @@ def frontpage(request):
                                               'signinform': signinform})
 
 
+@login_required
 def signout(request):
     logout(request)
     return redirect('/')
 
 
+@login_required
 def profile(request, username):
     if request.user.is_authenticated:
         user = User.objects.get(username=username)
@@ -68,6 +70,7 @@ def profile(request, username):
         return redirect('/')
 
 
+@login_required
 def following(request, username):
     user = User.objects.get(username=username)
     djeeterprofiles = user.djeeterprofile.follows.all()  # important to add .all()
@@ -76,6 +79,7 @@ def following(request, username):
                                           'djeeterprofiles': djeeterprofiles})
 
 
+@login_required
 def followers(request, username):
     user = User.objects.get(username=username)
     djeeterprofiles = user.djeeterprofile.followed_by.all()  # important to add .all()

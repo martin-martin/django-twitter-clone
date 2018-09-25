@@ -1,0 +1,81 @@
+{% extends "templates/base.html" %}
+
+{% block main %}
+<div class="row">
+    <!-- Feed -->
+    <div class="col-9">
+        <h3>@{{ user.username }}</h3>
+
+        <hr>
+
+        <p>
+            <strong><a href="/{{ user.username }}/following">Following </a></strong>{{ user.djeeterprofile.follows.count }} - <strong><a href="/{{ user.username }}/followers">Followers </a></strong>{{ user.djeeterprofile.followed_by.count }}
+        </p>
+
+        {% ifnotequal request.user user %}
+            <hr>
+            {% if request.user.djeeterprofile in user.djeeterprofile.followed_by.all %}
+                <a href="/{{ user.username }}/stopfollow" class="btn btn-danger">Stop following</a>
+            {% else %}
+                <a href="/{{ user.username }}/follow" class="btn btn-success">Follow</a>
+            {% endif %}
+        {% endifnotequal %}
+
+        <hr>
+
+        {% if user.djeets.all %}
+            {% for djeet in user.djeets.all %}
+                <div class="card" style="margin-bottom: 20px;">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            @{{ user.username }}
+                        </h5>
+                        <p class="card-text">
+                            <strong>{{ djeet.created_at }}</strong>
+                            - {{ djeet.body }}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Nothing to see here!</p>
+        {% endif %}
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-3">
+        <h3>Add djeet</h3>
+
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="/{{ request.user.username }}/" method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field }}
+                </div>
+            {% endfor %}
+
+            <input type="hidden" value="{{ request.path }}" name="redirect">
+            <input type="submit" value="Post djeet" class="btn btn-primary">
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock main %}
