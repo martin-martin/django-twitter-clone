@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from djeeterprofile.forms import SignupForm, SigninForm
 from djeet.forms import DjeetForm
 
@@ -65,3 +66,35 @@ def profile(request, username):
 
     else:
         return redirect('/')
+
+
+def following(request, username):
+    user = User.objects.get(username=username)
+    djeeterprofiles = user.djeeterprofile.follows.all()  # important to add .all()
+
+    return render(request, 'users.html', {'title': 'Following',
+                                          'djeeterprofiles': djeeterprofiles})
+
+
+def followers(request, username):
+    user = User.objects.get(username=username)
+    djeeterprofiles = user.djeeterprofile.followed_by.all()  # important to add .all()
+
+    return render(request, 'users.html', {'title': 'Followers',
+                                          'djeeterprofiles': djeeterprofiles})
+
+
+@login_required
+def follow(request, username):
+    user = User.objects.get(username=username)
+    request.user.djeeterprofile.follows.add(user.djeeterprofile)
+
+    return redirect('/' + user.username + '/')
+
+
+@login_required
+def stopfollow(request, username):
+    user = User.objects.get(username=username)
+    request.user.djeeterprofile.follows.delete(user.djeeterprofile)
+
+    return redirect('/' + user.username + '/')

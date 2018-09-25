@@ -6,6 +6,23 @@
     <div class="col-9">
         <h3>@{{ user.username }}</h3>
 
+        <hr>
+
+        <p>
+            <strong><a href="/{{ user.username }}/following">Following </a></strong>{{ user.djeeterprofile.follows.count }} - <strong><a href="/{{ user.username }}/followers">Followers </a></strong>{{ user.djeeterprofile.followed_by.count }}
+        </p>
+
+        {% ifnotequal request.user user %}
+            <hr>
+            {% if request.user.djeeterprofile in user.djeeterprofile.followed_by.all %}
+                <a href="/{{ user.username }}/stopfollow" class="btn btn-danger">Stop following</a>
+            {% else %}
+                <a href="/{{ user.username }}/follow" class="btn btn-success">Follow</a>
+            {% endif %}
+        {% endifnotequal %}
+
+        <hr>
+
         {% if user.djeets.all %}
             {% for djeet in user.djeets.all %}
                 <div class="card" style="margin-bottom: 20px;">

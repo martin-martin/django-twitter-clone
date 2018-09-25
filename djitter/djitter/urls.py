@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from djeet.views import feed
 from djeeterprofile.views import frontpage, signout, profile
+from djeeterprofile.views import following, followers, follow, stopfollow
 
 
 urlpatterns = [
@@ -24,5 +25,9 @@ urlpatterns = [
     path('feed/', feed, name='feed'),
     path('signout/', signout, name='signout'),
     path('<str:username>/', profile, name='profile'),
+    path('<str:username>/following', following, name='following'),
+    path('<str:username>/followers', followers, name='followers'),
+    path('<str:username>/follow', follow, name='follow'),
+    path('<str:username>/stopfollow', stopfollow, name='stopfollow'),
     path('admin/', admin.site.urls),
 ]
