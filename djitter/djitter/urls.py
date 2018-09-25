@@ -21,6 +21,7 @@ from djeeterprofile.views import following, followers, follow, stopfollow
 
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', frontpage, name='frontpage'),
     path('feed/', feed, name='feed'),
     path('signout/', signout, name='signout'),
@@ -29,5 +30,4 @@ urlpatterns = [
     path('<str:username>/followers', followers, name='followers'),
     path('<str:username>/follow', follow, name='follow'),
     path('<str:username>/stopfollow', stopfollow, name='stopfollow'),
-    path('admin/', admin.site.urls),
 ]

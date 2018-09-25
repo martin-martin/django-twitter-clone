@@ -9,5 +9,8 @@ class DjeeterProfile(models.Model):
                                      related_name='followed_by',
                                      symmetrical=False)
 
+    def __str__(self):
+        return self.user.username
+
 
 User.djeeterprofile = property(lambda u: DjeeterProfile.objects.get_or_create(user=u)[0])
