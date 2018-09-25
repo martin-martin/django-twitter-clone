@@ -73,7 +73,8 @@ def profile(request, username):
 @login_required
 def following(request, username):
     user = User.objects.get(username=username)
-    djeeterprofiles = user.djeeterprofile.follows.all()  # important to add .all()
+    # important to add .all() at the end!
+    djeeterprofiles = user.djeeterprofile.follows.select_related('user').all()
 
     return render(request, 'users.html', {'title': 'Following',
                                           'djeeterprofiles': djeeterprofiles})
@@ -82,7 +83,8 @@ def following(request, username):
 @login_required
 def followers(request, username):
     user = User.objects.get(username=username)
-    djeeterprofiles = user.djeeterprofile.followed_by.all()  # important to add .all()
+    # important to add .all() at the end!
+    djeeterprofiles = user.djeeterprofile.followed_by.select_related('user').all()
 
     return render(request, 'users.html', {'title': 'Followers',
                                           'djeeterprofiles': djeeterprofiles})
