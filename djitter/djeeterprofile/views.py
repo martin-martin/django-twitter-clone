@@ -101,6 +101,7 @@ def follow(request, username):
 @login_required
 def stopfollow(request, username):
     user = User.objects.get(username=username)
-    request.user.djeeterprofile.follows.delete(user.djeeterprofile)
+    # watch out, this should be .remove() instead of .delete()
+    request.user.djeeterprofile.follows.remove(user.djeeterprofile)
 
     return redirect('/' + user.username + '/')
